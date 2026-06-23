@@ -136,8 +136,8 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
                 <option>STLR 120</option><option>STLR 180</option>
                 <option>STLR 220</option><option>STLR 400</option>
               </select></div>
-            <div class="fg"><label>Machine Serial No <span style="font-size:.72rem;color:var(--muted);font-weight:400">(Optional)</span></label>
-              <input type="text" id="machineSerial" placeholder="e.g. SN-20241001"></div>
+            <div class="fg"><label>Machine Serial No <span class="req">*</span></label>
+              <input type="text" id="machineSerial" placeholder="e.g. SN-20241001" required></div>
           </div>
         </div>
         <div class="sec">
@@ -178,7 +178,7 @@ function showErr(msg) {
 
 function validate() {
   var ok = true;
-  ["customerName","customerEmail","machineModel","description"].forEach(function(id) {
+  ["customerName","customerEmail","machineModel","machineSerial","description"].forEach(function(id) {
     var el = document.getElementById(id);
     if (!el.value.trim()) {
       el.classList.add("err"); ok = false;
