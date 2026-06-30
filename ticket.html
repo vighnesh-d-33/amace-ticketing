@@ -52,15 +52,7 @@ select{appearance:none;cursor:pointer;padding-right:34px;
   background-repeat:no-repeat;background-position:right 13px center;}
 select option{background:#1a0a0a}
 textarea{resize:vertical;min-height:90px;line-height:1.6}
-.rw{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.ro{display:flex;align-items:center;gap:8px;background:var(--s2);border:1.5px solid rgba(212,32,32,.12);
-  border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .2s,background .2s;}
-.ro:hover{border-color:rgba(212,32,32,.4);background:rgba(212,32,32,.04)}
-.ro input[type=radio]{appearance:none;width:16px;height:16px;flex-shrink:0;
-  border:2px solid rgba(212,32,32,.35);border-radius:50%;cursor:pointer;transition:all .15s;}
-.ro input[type=radio]:checked{border-color:var(--red);background:var(--red);
-  box-shadow:0 0 0 3px rgba(212,32,32,.2),inset 0 0 0 3px var(--s2);}
-.ro span{font-size:.84rem;font-weight:500}
+
 .sr{display:flex;justify-content:center;margin-top:32px}
 .btn{font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:3px;
   text-transform:uppercase;color:#fff;border:none;cursor:pointer;border-radius:10px;padding:14px 48px;
@@ -89,9 +81,75 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 /* Error banner */
 .err-banner{background:rgba(231,76,60,.1);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;
   padding:12px 16px;font-size:.84rem;color:#e74c3c;margin-bottom:18px;display:none;line-height:1.5}
+/* Track Ticket Section */
+.track-section{max-width:820px;margin:32px auto 60px;padding:0 20px}
+.track-card{background:var(--s1);border:1px solid rgba(41,128,185,.25);border-radius:14px;
+  padding:28px 36px;box-shadow:0 8px 40px rgba(0,0,0,.4);position:relative;overflow:hidden;}
+.track-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;
+  background:linear-gradient(90deg,#1a4a6b,#2980b9,#5dade2,#2980b9,#1a4a6b);}
+.track-head{font-family:'Rajdhani',sans-serif;font-size:.62rem;letter-spacing:4px;
+  text-transform:uppercase;color:#5dade2;display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.track-head::after{content:'';flex:1;height:1px;background:rgba(41,128,185,.2)}
+.track-row{display:flex;gap:10px;flex-wrap:wrap}
+.track-inp{background:var(--s2);border:1.5px solid rgba(41,128,185,.2);border-radius:8px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;
+  padding:11px 14px;outline:none;flex:1;min-width:200px;transition:border-color .2s;}
+.track-inp:focus{border-color:#2980b9;box-shadow:0 0 0 3px rgba(41,128,185,.12);}
+.track-inp.err{border-color:#e74c3c!important}
+.btn-track{font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;border:none;cursor:pointer;border-radius:8px;
+  padding:12px 28px;white-space:nowrap;
+  background:linear-gradient(135deg,#1a4a6b,#2980b9);
+  box-shadow:0 4px 16px rgba(41,128,185,.35);transition:transform .15s;}
+.btn-track:hover{transform:translateY(-2px)} .btn-track:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.track-err{background:rgba(231,76,60,.1);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;
+  padding:11px 14px;font-size:.83rem;color:#e74c3c;margin-top:12px;display:none}
+.status-result{margin-top:18px;display:none}
+.status-box{background:var(--s2);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;}
+.status-hdr{padding:12px 18px;font-family:'Rajdhani',sans-serif;font-size:.72rem;
+  letter-spacing:2.5px;text-transform:uppercase;font-weight:700;display:flex;
+  align-items:center;justify-content:space-between;}
+.sOpen .status-hdr{background:rgba(243,156,18,.12);color:#f39c12;border-bottom:1px solid rgba(243,156,18,.2);}
+.sAssigned .status-hdr{background:rgba(41,128,185,.12);color:#5dade2;border-bottom:1px solid rgba(41,128,185,.2);}
+.sClosed .status-hdr{background:rgba(39,174,96,.1);color:#27ae60;border-bottom:1px solid rgba(39,174,96,.2);}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.sOpen .status-dot{background:#f39c12;box-shadow:0 0 6px #f39c12;}
+.sAssigned .status-dot{background:#5dade2;box-shadow:0 0 6px #5dade2;}
+.sClosed .status-dot{background:#27ae60;box-shadow:0 0 6px #27ae60;}
+.status-body{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;}
+.sf{display:flex;flex-direction:column;gap:3px}
+.sk{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+.sv2{font-size:.88rem;color:var(--text);line-height:1.5}
+.sf.full2{grid-column:1/-1}
+.spn2{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);
+  border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:6px;}
+
+/* Feedback widget */
+.fb-box{margin-top:16px;padding-top:16px;border-top:1px dashed rgba(39,174,96,.25);}
+.fb-title{font-size:.78rem;font-weight:700;color:#27ae60;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.fb-stars{display:flex;gap:6px;margin-bottom:12px;}
+.fb-star{font-size:1.7rem;cursor:pointer;color:#3a3a3a;transition:color .15s,transform .1s;
+  user-select:none;line-height:1;}
+.fb-star:hover{transform:scale(1.15)}
+.fb-star.active{color:#f5c518}
+.fb-comment{background:var(--s2);border:1.5px solid rgba(39,174,96,.18);border-radius:8px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;
+  padding:10px 13px;outline:none;width:100%;min-height:64px;resize:vertical;margin-bottom:10px;}
+.fb-comment:focus{border-color:#27ae60;box-shadow:0 0 0 3px rgba(39,174,96,.12)}
+.btn-fb{font-family:'Rajdhani',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:#fff;border:none;cursor:pointer;border-radius:8px;
+  padding:10px 24px;background:linear-gradient(135deg,#1d6b3f,#27ae60);
+  box-shadow:0 4px 16px rgba(39,174,96,.3);transition:transform .15s;}
+.btn-fb:hover{transform:translateY(-2px)} .btn-fb:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.fb-err{background:rgba(231,76,60,.1);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;
+  padding:9px 13px;font-size:.8rem;color:#e74c3c;margin-bottom:10px;display:none}
+.fb-thanks{display:flex;align-items:center;gap:8px;color:#27ae60;font-size:.88rem;font-weight:600;}
+.fb-given{font-size:.82rem;color:var(--muted);margin-top:4px}
 @media(max-width:620px){
   header{padding:12px 16px}.card{padding:24px 16px}
-  .grid{grid-template-columns:1fr}.full{grid-column:1}.rw{grid-template-columns:1fr 1fr}}
+  .grid{grid-template-columns:1fr}.full{grid-column:1}
+  .track-card{padding:20px 16px}.status-body{grid-template-columns:1fr}.sf.full2{grid-column:1}}
 </style>
 </head>
 <body>
@@ -105,11 +163,33 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
     <h2>Raise a <em>Service</em> Ticket</h2>
     <div class="rule"><div class="rl"></div><div class="rd"></div><div class="rl r"></div></div>
   </div>
-  <div class="card">
+  <div class="card" id="mainCard">
+    <!-- FEEDBACK SCREEN — shown only when arriving from a "Rate this ticket" email link -->
+    <div id="fbScreen" style="display:none">
+      <div class="ss" style="display:block">
+        <div class="tick">⭐</div>
+        <h3>Rate Your Service Experience</h3>
+        <p>Ticket <b id="fbPageTicketIdLabel" style="font-family:monospace;color:var(--red2)"></b> — let us know how we did.</p>
+      </div>
+      <div class="fb-err" id="fbPageErr"></div>
+      <div class="fb-stars" id="fbPageStars" style="justify-content:center;margin:18px 0 14px"></div>
+      <textarea class="fb-comment" id="fbPageComment" placeholder="Tell us about your experience (optional)" style="max-width:480px;margin:0 auto 14px;display:block"></textarea>
+      <div style="text-align:center" id="fbPageSubmitWrap">
+        <button class="btn-fb" id="fbPageSubmitBtn" onclick="submitFeedbackFromEmail()">
+          <span class="spn2" id="fbPageSpin" style="border-top-color:#fff"></span><span id="fbPageBtnTxt">Submit Feedback</span>
+        </button>
+      </div>
+      <div id="fbThanksBox" style="display:none;text-align:center;margin-top:10px">
+        <div class="fb-thanks" style="justify-content:center">✅ Thank you for your feedback!</div>
+        <div class="fb-given" id="fbGivenSummary"></div>
+        <button class="btn-new" style="margin-top:18px" onclick="window.location.href='ticket.html'">&#8592; Back to Ticket Portal</button>
+      </div>
+    </div>
+
     <div class="ss" id="ss">
       <div class="tick">&#9989;</div>
       <h3>Ticket Raised Successfully!</h3>
-      <p>Your ticket has been submitted. Our admin will assign an engineer shortly.<br>
+      <p>Your ticket has been submitted. Our team will assign an engineer shortly.<br>
         A confirmation email has been sent to your inbox.</p>
       <div class="tid" id="ssTid">TKT---------</div><br>
       <button class="btn-new" onclick="resetForm()">&#43; Raise Another Ticket</button>
@@ -125,6 +205,10 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
               <input type="text" id="customerName" placeholder="Your name or company name" required></div>
             <div class="fg"><label>Email Address <span class="req">*</span></label>
               <input type="email" id="customerEmail" placeholder="you@example.com" required></div>
+            <div class="fg"><label>Phone Number <span style="font-size:.7rem;color:var(--muted);font-weight:400">(Optional)</span></label>
+              <input type="tel" id="customerPhone" placeholder="e.g. +91 98765 43210"></div>
+            <div class="fg full"><label>Address <span class="req">*</span></label>
+              <textarea id="customerAddress" placeholder="Full address including city, state and PIN code" style="min-height:70px" required></textarea></div>
           </div>
         </div>
         <div class="sec">
@@ -138,17 +222,6 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
               </select></div>
             <div class="fg"><label>Machine Serial No <span class="req">*</span></label>
               <input type="text" id="machineSerial" placeholder="e.g. SN-20241001" required></div>
-          </div>
-        </div>
-        <div class="sec">
-          <div class="sh">Nature of Issue <span style="color:var(--red);margin-left:4px">*</span></div>
-          <div class="rw" id="rw">
-            <label class="ro"><input type="radio" name="issue" value="Optics"><span>Optics</span></label>
-            <label class="ro"><input type="radio" name="issue" value="Electrical & Electronics"><span>Electrical &amp; Electronics</span></label>
-            <label class="ro"><input type="radio" name="issue" value="Mechanicals"><span>Mechanicals</span></label>
-            <label class="ro"><input type="radio" name="issue" value="Software"><span>Software</span></label>
-            <label class="ro"><input type="radio" name="issue" value="Application"><span>Application</span></label>
-            <label class="ro"><input type="radio" name="issue" value="Other"><span>Other</span></label>
           </div>
         </div>
         <div class="sec">
@@ -167,6 +240,23 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
     </div>
   </div>
 </main>
+
+<!-- ═══════ TRACK MY TICKET ═══════ -->
+<section class="track-section">
+  <div class="track-card">
+    <div class="track-head">&#128269;&nbsp;Track My Ticket</div>
+    <div class="track-row">
+      <input class="track-inp" type="text" id="trackId"
+        placeholder="Enter Ticket ID — e.g. TKT-20240617-1234"
+        onkeydown="if(event.key==='Enter')trackTicket()">
+      <button class="btn-track" id="trackBtn" onclick="trackTicket()">
+        <span class="spn2" id="trkSpin"></span><span id="trkTxt">Check Status</span>
+      </button>
+    </div>
+    <div class="track-err" id="trackErr"></div>
+    <div class="status-result" id="statusResult"></div>
+  </div>
+</section>
 <script>
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyYsRNIU-cJUPLrMG7u9EPHcFezAoiXzpVdUqkPfFI5i1wEvTXL6u7C9nNCDSp-51Mpqg/exec";
 
@@ -178,7 +268,7 @@ function showErr(msg) {
 
 function validate() {
   var ok = true;
-  ["customerName","customerEmail","machineModel","machineSerial","description"].forEach(function(id) {
+  ["customerName","customerEmail","customerAddress","machineModel","machineSerial","description"].forEach(function(id) {
     var el = document.getElementById(id);
     if (!el.value.trim()) {
       el.classList.add("err"); ok = false;
@@ -187,32 +277,21 @@ function validate() {
       });
     }
   });
-  var chk = document.querySelector('input[name="issue"]:checked');
-  if (!chk) {
-    document.getElementById("rw").style.outline = "2px solid var(--red)";
-    document.getElementById("rw").style.borderRadius = "8px";
-    ok = false;
-    document.querySelectorAll('input[name="issue"]').forEach(function(r) {
-      r.addEventListener("change", function() {
-        document.getElementById("rw").style.outline = "";
-      }, {once:true});
-    });
-  }
   return ok;
 }
 
 document.getElementById("tf").addEventListener("submit", async function(e) {
   e.preventDefault();
-  if (!validate()) { showErr("Please fill all required fields and select a nature of issue."); return; }
-  var chk = document.querySelector('input[name="issue"]:checked');
+  if (!validate()) { showErr("Please fill all required fields."); return; }
   var payload = {
-    action:        "raise",
-    customerName:  document.getElementById("customerName").value.trim(),
-    customerEmail: document.getElementById("customerEmail").value.trim(),
-    machineModel:  document.getElementById("machineModel").value,
-    machineSerial: document.getElementById("machineSerial").value.trim(),
-    issueNature:   chk ? chk.value : "Other",
-    description:   document.getElementById("description").value.trim()
+    action:          "raise",
+    customerName:    document.getElementById("customerName").value.trim(),
+    customerEmail:   document.getElementById("customerEmail").value.trim(),
+    customerPhone:   document.getElementById("customerPhone").value.trim(),
+    customerAddress: document.getElementById("customerAddress").value.trim(),
+    machineModel:    document.getElementById("machineModel").value,
+    machineSerial:   document.getElementById("machineSerial").value.trim(),
+    description:     document.getElementById("description").value.trim()
   };
   var btn = document.getElementById("sb");
   document.getElementById("spin").style.display = "inline-block";
@@ -248,11 +327,236 @@ document.getElementById("tf").addEventListener("submit", async function(e) {
   }
 });
 
+async function trackTicket() {
+  var inp   = document.getElementById("trackId");
+  var errEl = document.getElementById("trackErr");
+  var resEl = document.getElementById("statusResult");
+  var btn   = document.getElementById("trackBtn");
+  var tid   = inp.value.trim().toUpperCase();
+  errEl.style.display="none"; resEl.style.display="none"; resEl.innerHTML="";
+  inp.classList.remove("err");
+  if (!tid) { inp.classList.add("err"); errEl.textContent="⚠ Please enter a Ticket ID."; errEl.style.display="block"; return; }
+  btn.disabled=true;
+  document.getElementById("trkSpin").style.display="inline-block";
+  document.getElementById("trkTxt").textContent="Checking…";
+  try {
+    var res  = await fetch(SCRIPT_URL+"?action=getTicket&ticketId="+encodeURIComponent(tid)+"&_t="+Date.now(),{method:"GET",redirect:"follow"});
+    var data;
+    try{data=JSON.parse(await res.text());}catch(pe){data={};}
+    if (!data.ticket) {
+      errEl.textContent="⚠ Ticket not found. Please check your Ticket ID and try again.";
+      errEl.style.display="block";
+    } else {
+      var tk=data.ticket, cls="s"+tk.Status;
+      var lbl=tk.Status==="Open"?"🟡 Open — Awaiting Assignment":tk.Status==="Assigned"?"🔵 Assigned — Engineer Working":"🟢 Closed — Issue Resolved";
+      var engRow=(tk.Status==="Assigned"||tk.Status==="Closed")
+        ?'<div class="sf"><div class="sk">Engineer</div><div class="sv2">'+(tk.AssignedTo||"—")+'</div></div>':""
+      var closedRows=tk.Status==="Closed"
+        ?'<div class="sf full2"><div class="sk">Resolution Notes</div><div class="sv2">'+(tk.ClosureNotes||"—")+'</div></div>'
+         +'<div class="sf"><div class="sk">Nature of Issue</div><div class="sv2">'+(tk.IssueNature||"—")+'</div></div>'
+         +'<div class="sf"><div class="sk">Closed On</div><div class="sv2">'+(tk.ClosedAt?tk.ClosedAt.slice(0,16):"—")+'</div></div>':""
+
+      var fbHtml = "";
+      if (tk.Status === "Closed") {
+        if (tk.FeedbackRating) {
+          var givenStars = "";
+          for (var fs=1; fs<=5; fs++) givenStars += (fs<=parseInt(tk.FeedbackRating,10) ? "★" : "☆");
+          fbHtml = '<div class="fb-box"><div class="fb-thanks">✅ Thank you for your feedback!</div>'
+            + '<div class="fb-given">' + givenStars + ' &nbsp;(' + tk.FeedbackRating + '/5)'
+            + (tk.FeedbackComment ? ' — "' + tk.FeedbackComment + '"' : '') + '</div></div>';
+        } else {
+          fbHtml = '<div class="fb-box">'
+            + '<div class="fb-title">⭐ Rate Your Service Experience</div>'
+            + '<div class="fb-err" id="fbErr"></div>'
+            + '<div class="fb-stars" id="fbStars">'
+            + [1,2,3,4,5].map(function(n){return '<span class="fb-star" data-val="'+n+'" onclick="setFbRating('+n+')">★</span>';}).join('')
+            + '</div>'
+            + '<textarea class="fb-comment" id="fbComment" placeholder="Tell us about your experience (optional)"></textarea>'
+            + '<button class="btn-fb" id="fbSubmitBtn" onclick="submitFeedback(\''+tk.TicketID+'\')">'
+            + '<span class="spn2" id="fbSpin" style="border-top-color:#fff"></span><span id="fbBtnTxt">Submit Feedback</span></button>'
+            + '</div>';
+        }
+      }
+
+      resEl.innerHTML='<div class="status-box '+cls+'">'
+        +'<div class="status-hdr"><span><span class="status-dot"></span>'+lbl+'</span>'
+        +'<span style="font-family:monospace;font-size:.8rem;opacity:.7">'+tk.TicketID+'</span></div>'
+        +'<div class="status-body">'
+        +'<div class="sf"><div class="sk">Raised On</div><div class="sv2">'+(tk.Timestamp?tk.Timestamp.slice(0,16):"—")+'</div></div>'
+        +'<div class="sf"><div class="sk">Customer</div><div class="sv2">'+(tk.CustomerName||"—")+'</div></div>'
+        +'<div class="sf"><div class="sk">Machine</div><div class="sv2">'+(tk.MachineModel||"—")+(tk.MachineSerial?" / "+tk.MachineSerial:"")+'</div></div>'
+        +engRow+closedRows
+        +'<div class="sf full2"><div class="sk">Description</div><div class="sv2">'+(tk.Description||"—")+'</div></div>'
+        +'</div>'+fbHtml+'</div>';
+      resEl.style.display="block";
+    }
+  } catch(err) {
+    errEl.textContent="⚠ Could not check status. Please try again."; errEl.style.display="block";
+  } finally {
+    btn.disabled=false;
+    document.getElementById("trkSpin").style.display="none";
+    document.getElementById("trkTxt").textContent="Check Status";
+  }
+}
+
+var fbSelectedRating = 0;
+function setFbRating(n){
+  fbSelectedRating = n;
+  document.querySelectorAll("#fbStars .fb-star").forEach(function(s){
+    s.classList.toggle("active", parseInt(s.getAttribute("data-val"),10) <= n);
+  });
+  var errEl = document.getElementById("fbErr");
+  if (errEl) errEl.style.display = "none";
+}
+
+async function submitFeedback(ticketId){
+  var errEl = document.getElementById("fbErr");
+  var btn   = document.getElementById("fbSubmitBtn");
+  errEl.style.display = "none";
+  if (!fbSelectedRating) {
+    errEl.textContent = "⚠ Please select a star rating before submitting.";
+    errEl.style.display = "block";
+    return;
+  }
+  var comment = document.getElementById("fbComment").value.trim();
+  btn.disabled = true;
+  document.getElementById("fbSpin").style.display = "inline-block";
+  document.getElementById("fbBtnTxt").textContent = "Submitting…";
+  try {
+    var res = await fetch(SCRIPT_URL, {
+      method: "POST", redirect: "follow",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ action:"submitFeedback", ticketId:ticketId, rating:fbSelectedRating, comment:comment })
+    });
+    var d; try { d = JSON.parse(await res.text()); } catch(e) { d = {}; }
+    if (d.status === "error") {
+      errEl.textContent = "⚠ " + (d.message || "Could not submit feedback.");
+      errEl.style.display = "block";
+      btn.disabled = false;
+      document.getElementById("fbSpin").style.display = "none";
+      document.getElementById("fbBtnTxt").textContent = "Submit Feedback";
+    } else {
+      // Re-run the track lookup so the "thank you" state renders from fresh server data
+      document.getElementById("trackId").value = ticketId;
+      await trackTicket();
+    }
+  } catch(err) {
+    errEl.textContent = "⚠ Network error: " + err.message;
+    errEl.style.display = "block";
+    btn.disabled = false;
+    document.getElementById("fbSpin").style.display = "none";
+    document.getElementById("fbBtnTxt").textContent = "Submit Feedback";
+  }
+}
+
 function resetForm() {
   document.getElementById("tf").reset();
   document.getElementById("fa").style.display = "block";
   document.getElementById("ss").style.display = "none";
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   FEEDBACK FROM "TICKET CLOSED" EMAIL
+   When a customer clicks a star link in the closure email, they land on
+   ticket.html?feedback=TKT-XXXX&rating=N — this takes over the whole
+   card, pre-selects the clicked star, and lets them confirm/adjust + add
+   a comment before submitting.
+   ════════════════════════════════════════════════════════════════════ */
+var fbPageTicketId   = null;
+var fbPageRating     = 0;
+var fbPageSubmitting = false;
+
+function initFeedbackFromEmail() {
+  var params = new URLSearchParams(window.location.search);
+  var ticketId = params.get("feedback");
+  if (!ticketId) return; // normal page load — do nothing
+
+  var rating = parseInt(params.get("rating"), 10) || 0;
+  fbPageTicketId = ticketId.trim().toUpperCase();
+  fbPageRating   = Math.max(1, Math.min(5, rating));
+
+  // Hide the normal ticket form + track section, show the dedicated feedback screen
+  document.getElementById("fa").style.display = "none";
+  document.getElementById("ss").style.display = "none";
+  var trackSection = document.querySelector(".track-section");
+  if (trackSection) trackSection.style.display = "none";
+
+  document.getElementById("fbScreen").style.display = "block";
+  document.getElementById("fbPageTicketIdLabel").textContent = fbPageTicketId;
+
+  // Build the 5 stars
+  var starsWrap = document.getElementById("fbPageStars");
+  starsWrap.innerHTML = [1,2,3,4,5].map(function(n){
+    return '<span class="fb-star" data-val="'+n+'" onclick="setFbPageRating('+n+')">★</span>';
+  }).join("");
+  setFbPageRating(fbPageRating);
+}
+
+function setFbPageRating(n) {
+  fbPageRating = n;
+  document.querySelectorAll("#fbPageStars .fb-star").forEach(function(s){
+    s.classList.toggle("active", parseInt(s.getAttribute("data-val"),10) <= n);
+  });
+  document.getElementById("fbPageErr").style.display = "none";
+}
+
+async function submitFeedbackFromEmail() {
+  if (fbPageSubmitting) return;
+  var errEl = document.getElementById("fbPageErr");
+  errEl.style.display = "none";
+
+  if (!fbPageRating) {
+    errEl.textContent = "⚠ Please select a star rating before submitting.";
+    errEl.style.display = "block";
+    return;
+  }
+
+  fbPageSubmitting = true;
+  var btn = document.getElementById("fbPageSubmitBtn");
+  btn.disabled = true;
+  document.getElementById("fbPageSpin").style.display = "inline-block";
+  document.getElementById("fbPageBtnTxt").textContent = "Submitting…";
+
+  var comment = document.getElementById("fbPageComment").value.trim();
+
+  try {
+    var res = await fetch(SCRIPT_URL, {
+      method: "POST", redirect: "follow",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify({ action:"submitFeedback", ticketId:fbPageTicketId, rating:fbPageRating, comment:comment })
+    });
+    var d; try { d = JSON.parse(await res.text()); } catch(e) { d = {}; }
+
+    if (d.status === "error") {
+      errEl.textContent = "⚠ " + (d.message || "Could not submit feedback.");
+      errEl.style.display = "block";
+      btn.disabled = false;
+      document.getElementById("fbPageSpin").style.display = "none";
+      document.getElementById("fbPageBtnTxt").textContent = "Submit Feedback";
+      fbPageSubmitting = false;
+    } else {
+      var stars = "";
+      for (var s=1; s<=5; s++) stars += (s<=fbPageRating ? "★" : "☆");
+      document.getElementById("fbGivenSummary").innerHTML =
+        stars + " &nbsp;(" + fbPageRating + "/5)" + (comment ? ' — "' + comment + '"' : "");
+      document.getElementById("fbPageStars").parentElement; // no-op, kept for clarity
+      document.getElementById("fbPageComment").style.display = "none";
+      document.getElementById("fbPageSubmitWrap").style.display = "none";
+      document.getElementById("fbPageStars").style.display = "none";
+      document.getElementById("fbThanksBox").style.display = "block";
+    }
+  } catch(err) {
+    errEl.textContent = "⚠ Network error: " + err.message;
+    errEl.style.display = "block";
+    btn.disabled = false;
+    document.getElementById("fbPageSpin").style.display = "none";
+    document.getElementById("fbPageBtnTxt").textContent = "Submit Feedback";
+    fbPageSubmitting = false;
+  }
+}
+
+// Run on every page load — no-ops unless ?feedback=... is present in the URL
+initFeedbackFromEmail();
 </script>
 </body>
 </html>
