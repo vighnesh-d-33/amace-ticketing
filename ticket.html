@@ -15,7 +15,7 @@ header{display:flex;align-items:center;gap:18px;padding:16px 40px;border-bottom:
 .lw{width:56px;height:56px;flex-shrink:0;}
 .lw img{width:100%;height:100%;object-fit:contain;border-radius:6px;}
 .brand h1{font-family:'Rajdhani',sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;background:linear-gradient(100deg,#ff4444,#d42020,#7a2323);
+  text-transform:lowercase;background:linear-gradient(100deg,#ff4444,#d42020,#7a2323);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
 .brand p{font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:3px}
 .badge{margin-left:auto;background:rgba(41,128,185,.15);border:1px solid rgba(41,128,185,.3);
@@ -293,14 +293,9 @@ textarea{resize:vertical;min-height:90px;line-height:1.6}
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyYsRNIU-cJUPLrMG7u9EPHcFezAoiXzpVdUqkPfFI5i1wEvTXL6u7C9nNCDSp-51Mpqg/exec";
 
 // ── Require customer login — only logged-in customers may use this page ──
-// Use replace() so the browser back-button doesn't loop back to ticket.html
-(function() {
-  var params = new URLSearchParams(window.location.search);
-  var isFeedback = params.has("feedback"); // feedback links work without login
-  if (!isFeedback && sessionStorage.getItem("amace_customer_auth") !== "1") {
-    window.location.replace("customer-login.html");
-  }
-})();
+if (sessionStorage.getItem("amace_customer_auth") !== "1") {
+  window.location.href = "customer-login.html";
+}
 var SESSION_NAME  = sessionStorage.getItem("amace_customer_name")  || "";
 var SESSION_EMAIL = sessionStorage.getItem("amace_customer_email") || "";
 document.getElementById("welcomeName").textContent   = SESSION_NAME || "Customer";
@@ -311,7 +306,7 @@ function logoutCustomer() {
   sessionStorage.removeItem("amace_customer_auth");
   sessionStorage.removeItem("amace_customer_email");
   sessionStorage.removeItem("amace_customer_name");
-  window.location.replace("customer-login.html");
+  window.location.href = "customer-login.html";
 }
 
 // ── My registered machines — auto-fill + warranty lookup ───────────────────
