@@ -15,7 +15,7 @@ header{display:flex;align-items:center;gap:18px;padding:16px 40px;border-bottom:
 .lw{width:56px;height:56px;flex-shrink:0;}
 .lw img{width:100%;height:100%;object-fit:contain;border-radius:6px;}
 .brand h1{font-family:'Rajdhani',sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:2px;
-  text-transform:uppercase;background:linear-gradient(100deg,#ff4444,#d42020,#7a2323);
+  text-transform:lowercase;background:linear-gradient(100deg,#ff4444,#d42020,#7a2323);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
 .brand p{font-size:.6rem;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:3px}
 .badge{margin-left:auto;background:rgba(39,174,96,.15);border:1px solid rgba(39,174,96,.3);
@@ -55,6 +55,17 @@ main{max-width:1000px;margin:36px auto 80px;padding:0 20px}
 .blogout:hover{color:var(--text);border-color:rgba(255,255,255,.28)}
 .stats{display:flex;gap:12px;margin-bottom:22px;flex-wrap:wrap}
 .stat{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:14px 18px;flex:1;min-width:120px;}
+.search-wrap{position:relative;margin-bottom:18px}
+.search-wrap input{width:100%;background:var(--s1);border:1.5px solid var(--border);border-radius:10px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:12px 40px 12px 40px;
+  outline:none;transition:border-color .15s}
+.search-wrap input::placeholder{color:var(--muted)}
+.search-wrap input:focus{border-color:rgba(212,32,32,.5)}
+.search-wrap .si{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.9rem;pointer-events:none}
+.search-wrap .sx{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:transparent;border:none;
+  color:var(--muted);cursor:pointer;font-size:1rem;padding:6px;display:none;line-height:1}
+.search-wrap .sx:hover{color:var(--text)}
+.search-count{font-size:.72rem;color:var(--muted);margin:-10px 0 16px 2px;letter-spacing:.2px}
 .sv{font-family:'Rajdhani',sans-serif;font-size:1.8rem;font-weight:700;line-height:1}
 .sv.y{color:var(--yellow)} .sv.b{color:#5dade2} .sv.g{color:var(--green)}
 .sl{font-size:.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
@@ -168,7 +179,7 @@ main{max-width:1000px;margin:36px auto 80px;padding:0 20px}
 
   <div id="portal">
     <div class="ph">
-      <h2>My <em>Assigned</em> Tickets</h2>
+      <h2 id="portalHeading">My <em>Assigned</em> Tickets</h2>
       <div style="display:flex;align-items:center;gap:10px">
         <div class="entag" id="engNameTag"></div>
         <button class="blogout" onclick="exportCSV()">&#8595; Export CSV</button>
@@ -176,11 +187,19 @@ main{max-width:1000px;margin:36px auto 80px;padding:0 20px}
       </div>
     </div>
     <div class="stats">
-      <div class="stat"><div class="sv y" id="eOpen">&#8211;</div><div class="sl">Open</div></div>
-      <div class="stat"><div class="sv b" id="eAssigned">&#8211;</div><div class="sl">Assigned</div></div>
+      <div class="stat"><div class="sv b" id="eAssigned">&#8211;</div><div class="sl">Active (Assigned)</div></div>
       <div class="stat"><div class="sv g" id="eClosed">&#8211;</div><div class="sl">Closed Today</div></div>
+      <div class="stat"><div class="sv g" id="eClosedTotal">&#8211;</div><div class="sl">Total Closed</div></div>
     </div>
+
     <div class="err-banner" id="errBanner"></div>
+    <div class="search-wrap">
+      <span class="si">&#128269;</span>
+      <input type="text" id="ticketSearch" placeholder="Search your tickets by ID, customer, machine, or issue&#8230;"
+             oninput="handleSearch()" autocomplete="off">
+      <button type="button" class="sx" id="searchClear" onclick="clearSearch()">&#10005;</button>
+    </div>
+    <div class="search-count" id="searchCount"></div>
     <div id="ticketsContainer"><div class="cm"><div class="loader"></div><p>Loading tickets&#8230;</p></div></div>
   </div>
 </main>
@@ -298,12 +317,31 @@ function exportCSV(){
   URL.revokeObjectURL(url);
 }
 
+// ClosedAt / AssignedAt are stored by Code.gs as new Date().toLocaleString("en-IN", {timeZone:"Asia/Kolkata"}),
+// which prints "D/M/YYYY, h:mm:ss am/pm" (day THEN month, no leading zeros) — e.g. "3/7/2026, 9:26:35 am"
+// for 3 July 2026. That is NOT the same as an ISO "YYYY-MM-DD" string, and new Date(str) misreads it as
+// US-style M/D/Y — so comparing it against an ISO "today" string (the old code) always came out false,
+// which is why "Closed Today" was stuck at 0. Parse the D/M/Y fields directly instead.
+function parseISTDateParts(str){
+  if(!str) return null;
+  var m = String(str).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if(!m) return null;
+  return { day: parseInt(m[1],10), month: parseInt(m[2],10), year: parseInt(m[3],10) };
+}
+
 function updateStats(t){
-  var today=new Date().toISOString().slice(0,10);
-  document.getElementById("eOpen")    .textContent=t.filter(function(x){return x.Status==="Open";}).length;
+  var istNow   = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  var todayD   = istNow.getDate(), todayM = istNow.getMonth()+1, todayY = istNow.getFullYear();
+
   document.getElementById("eAssigned").textContent=t.filter(function(x){return x.Status==="Assigned";}).length;
-  document.getElementById("eClosed")  .textContent=t.filter(function(x){
-    return x.Status==="Closed" && (x.ClosedAt||"").slice(0,10)===today; }).length;
+
+  var closedTickets = t.filter(function(x){ return x.Status==="Closed"; });
+  document.getElementById("eClosedTotal").textContent = closedTickets.length;
+
+  document.getElementById("eClosed").textContent = closedTickets.filter(function(x){
+    var d = parseISTDateParts(x.ClosedAt);
+    return d && d.day===todayD && d.month===todayM && d.year===todayY;
+  }).length;
 }
 
 // ── LOAD — proper redirect:follow + JSON read with error reporting
@@ -322,7 +360,7 @@ async function loadTickets(){
 
     myTickets = (data.tickets || []).filter(function(t){ return t.AssignedTo === currentEngineer; });
     updateStats(myTickets);
-    renderCards(myTickets);
+    renderFilteredCards();
   } catch(err) {
     document.getElementById("ticketsContainer").innerHTML='<div class="cm"><div class="ic">&#9888;&#65039;</div>'
       +'<p style="color:#e74c3c;font-weight:600">Failed to load tickets</p>'
@@ -331,9 +369,46 @@ async function loadTickets(){
   }
 }
 
+// ── Search (client-side, within the tickets assigned to this engineer) ─
+var ticketSearchTerm = "";
+
+function applySearchFilter(tickets){
+  var q = ticketSearchTerm.trim().toLowerCase();
+  if(!q) return tickets;
+  return tickets.filter(function(t){
+    return [t.TicketID, t.CustomerName, t.MachineModel, t.MachineSerial, t.IssueNature, t.Description, t.Status]
+      .some(function(f){ return (f||"").toString().toLowerCase().indexOf(q) !== -1; });
+  });
+}
+
+function renderFilteredCards(){
+  var filtered = applySearchFilter(myTickets);
+  renderCards(filtered);
+  var countEl = document.getElementById("searchCount");
+  countEl.textContent = ticketSearchTerm.trim()
+    ? filtered.length + " of " + myTickets.length + " tickets match \u201c" + ticketSearchTerm.trim() + "\u201d"
+    : "";
+}
+
+function handleSearch(){
+  ticketSearchTerm = document.getElementById("ticketSearch").value;
+  document.getElementById("searchClear").style.display = ticketSearchTerm ? "block" : "none";
+  renderFilteredCards();
+}
+
+function clearSearch(){
+  ticketSearchTerm = "";
+  document.getElementById("ticketSearch").value = "";
+  document.getElementById("searchClear").style.display = "none";
+  renderFilteredCards();
+  document.getElementById("ticketSearch").focus();
+}
+
 function renderCards(tickets){
   if(!tickets.length){
-    document.getElementById("ticketsContainer").innerHTML='<div class="cm"><div class="ic">&#127881;</div><p>No tickets assigned to you right now.</p></div>';
+    document.getElementById("ticketsContainer").innerHTML=ticketSearchTerm.trim()
+      ?'<div class="cm"><div class="ic">&#128269;</div><p>No tickets match your search.</p></div>'
+      :'<div class="cm"><div class="ic">&#127881;</div><p>No tickets assigned to you right now.</p></div>';
     return;
   }
   var sorted=tickets.slice().sort(function(a,b){
@@ -394,7 +469,7 @@ async function confirmClose(){
       body:JSON.stringify({action:"close",ticketId:pendingId,issueNature:issueChk.value,closureNotes:notes,closedBy:currentEngineer})});
     var t=myTickets.find(function(x){return x.TicketID===pendingId;});
     if(t){t.Status="Closed";t.ClosureNotes=notes;t.ClosedAt=new Date().toLocaleString("en-IN");t.ClosedBy=currentEngineer;}
-    updateStats(myTickets); renderCards(myTickets);
+    updateStats(myTickets); renderFilteredCards();
     document.getElementById("closeModal").classList.remove("open");
     toast("&#10004; Ticket closed! Customer notified by email.");
   }catch(err){toast("Failed to close ticket: "+err.message,"e");}
